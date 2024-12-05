@@ -1,5 +1,5 @@
 # Ex.05 Design a Website for Server Side Processing
-## Date:
+## Date:28-11-2024
 
 ## AIM:
  To design a website to calculate the power of a lamp filament in an incandescent bulb in the server side. 
@@ -32,13 +32,87 @@ Create a HTML file to implement form based input and output.
 Publish the website in the given URL.
 
 ## PROGRAM :
+```
+<html>
+    <head>
+        <style>
+          .container{
+            width: 500px;
+            border: 5px;
+            background-color: crimson;
+            text-align: center;
+            padding: 0px;
+
+          }
+         
+            
+
+        </style>
+    </head>
+    
+    <body bgcolor="white">
+        
+        <div class="formelt" allign="center"><h1>POWER OF THE LAMP.</h1> </div>
+        <form method="POST" allign="center">
+            {% csrf_token %}
+            <div class="container" allign="center">
+             Intensity: <input type="text" name="intensity" value={{i}}></input>m<sup>2</sup><br/>
+
+            </div>
+            <div class="container">
+                Resistance:<input type="text" name="resistance" value={{r}}></input>(in ohm's)<br/>
+
+            </div>
+            <div class="container">
+                <input type="submit" value="PRESS"></input><br/>
+
+            </div>
+            <div class="container">
+                Power:<input type="text" name="power" value={{power}}></input>m<sup>2</sup><br/>            
+            </div>
+        </form>
+    </body>
+    
+</html>
+ 
+ views.py
+ from django.shortcuts import render 
+def power(request): 
+    context={} 
+    context['power'] = "0" 
+    context['i'] = "0" 
+    context['r'] = "0" 
+    if request.method == 'POST': 
+        print("POST method is used")
+        i = int(request.POST.get('intensity','0'))
+        r = int(request.POST.get('resistance','0'))
+        print('request=',request) 
+        print('Intensity=',i) 
+        print('Resistance=',r) 
+        power = i*i*r
+        context['power'] = power
+        context['i'] = i
+        context['r'] = r
+        print('Power=',power) 
+    return render(request,'design/math.html',context)
+
+urls.py
+from django.contrib import admin 
+from django.urls import path 
+from design import views 
+urlpatterns = [ 
+    path('admin/', admin.site.urls), 
+    path('power/',views.power,name="power"),
+    path('',views.power,name="power")
+]    
+```
 
 
 ## SERVER SIDE PROCESSING:
-
+![alt text](<Screenshot 2024-12-05 173414.png>)
 
 ## HOMEPAGE:
-
+![alt text](<Screenshot 2024-12-05 173300.png>)
 
 ## RESULT:
 The program for performing server side processing is completed successfully.
